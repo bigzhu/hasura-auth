@@ -151,13 +151,13 @@ export const oauthProviders = Router()
    */
   .use((req, res, next) => {
     if (!res.locals.grant) {
-        res.locals.grant = {};
+      res.locals.grant = {};
     }
 
     if (!res.locals.grant.dynamic) {
-        res.locals.grant.dynamic = {};
+      res.locals.grant.dynamic = {};
     }
-    res.locals.grant.dynamic['origin'] = `${req.protocol}://${req.hostname}`;
+    // res.locals.grant.dynamic['origin'] = `${req.protocol}://${req.hostname}`;
 
     next();
   })
@@ -213,8 +213,8 @@ export const oauthProviders = Router()
         typeof query.error_description === 'string'
           ? query.error_description
           : typeof query.error === 'string' && query.error !== error
-          ? query.error
-          : fallbackMessage || 'Unknown error';
+            ? query.error
+            : fallbackMessage || 'Unknown error';
       const details: Record<string, string> = {
         error,
         errorDescription,
@@ -276,7 +276,7 @@ export const oauthProviders = Router()
 
       user = await getUserById(claims['x-hasura-user-id']);
       if (!user) {
-        return sendErrorFromQuery('user-not-found','User not found');
+        return sendErrorFromQuery('user-not-found', 'User not found');
       }
 
       const { insertAuthUserProvider } =
@@ -291,7 +291,7 @@ export const oauthProviders = Router()
         });
 
       if (!insertAuthUserProvider) {
-          return sendErrorFromQuery('internal-error', 'Could not add a provider to user');
+        return sendErrorFromQuery('internal-error', 'Could not add a provider to user');
       }
     } else if (authUserProvider) {
       // * The userProvider already exists. Update it with the new tokens

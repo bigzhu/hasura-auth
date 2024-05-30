@@ -127,8 +127,8 @@ export const createGrantConfig = (): GrantConfig =>
           const initialScope = Array.isArray(grant.scope)
             ? grant.scope
             : typeof grant.scope === 'string'
-            ? [grant.scope]
-            : [];
+              ? [grant.scope]
+              : [];
           // * Merge both sources, and remove duplicates
           grant.scope = [...new Set([...initialScope, ...customScope])];
         }
@@ -138,6 +138,7 @@ export const createGrantConfig = (): GrantConfig =>
     },
     {
       defaults: {
+        origin: ENV.AUTH_SERVER_URL,
         prefix: `${ENV.AUTH_API_PREFIX}${OAUTH_ROUTE}`,
         transport: 'session',
         scope: ['email', 'profile'],
