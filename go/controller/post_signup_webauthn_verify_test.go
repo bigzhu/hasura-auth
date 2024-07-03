@@ -18,6 +18,7 @@ import (
 	"github.com/nhost/hasura-auth/go/notifications"
 	"github.com/nhost/hasura-auth/go/sql"
 	"github.com/nhost/hasura-auth/go/testhelpers"
+	"github.com/oapi-codegen/runtime/types"
 	"go.uber.org/mock/gomock"
 )
 
@@ -223,7 +224,7 @@ func TestPostSignupWebauthnVerify(t *testing.T) { //nolint:maintidx
 						CreatedAt:           time.Now(),
 						DefaultRole:         "user",
 						DisplayName:         "Jane Doe",
-						Email:               "jane@acme.com",
+						Email:               ptr(types.Email("jane@acme.com")),
 						EmailVerified:       false,
 						Id:                  "cf91d1bc-875e-49bc-897f-fbccf32ede11",
 						IsAnonymous:         false,
@@ -319,7 +320,7 @@ func TestPostSignupWebauthnVerify(t *testing.T) { //nolint:maintidx
 						CreatedAt:           time.Now(),
 						DefaultRole:         "user",
 						DisplayName:         "Jane Doe",
-						Email:               "jane@acme.com",
+						Email:               ptr(types.Email("jane@acme.com")),
 						EmailVerified:       false,
 						Id:                  "cf91d1bc-875e-49bc-897f-fbccf32ede11",
 						IsAnonymous:         false,
@@ -657,10 +658,8 @@ func TestPostSignupWebauthnVerify(t *testing.T) { //nolint:maintidx
 	}
 
 	for _, tc := range cases {
-		tc := tc
 		t.Run(tc.name, func(t *testing.T) {
 			t.Parallel()
-			tc := tc
 
 			ctrl := gomock.NewController(t)
 
