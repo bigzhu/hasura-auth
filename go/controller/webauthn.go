@@ -55,7 +55,6 @@ func NewWebAuthn(config Config) (*Webauthn, error) {
 		RPOrigins:             config.WebauthnRPOrigins,
 		AttestationPreference: protocol.PreferIndirectAttestation,
 		EncodeUserIDAsString:  true,
-		Timeout:               0,
 		Timeouts: webauthn.TimeoutsConfig{
 			Login: webauthn.TimeoutConfig{
 				Enforce:    true,
@@ -128,13 +127,13 @@ func (w *Webauthn) FinishRegistration(
 	challenge, ok := w.Storage[response.Response.CollectedClientData.Challenge]
 	if !ok {
 		logger.Info("webauthn challenge not found")
-		return nil, WebauthnUser{}, ErrInvalidRequest //nolint:exhaustruct
+		return nil, WebauthnUser{}, ErrInvalidRequest
 	}
 
 	cred, err := w.wa.CreateCredential(challenge.User, challenge.Session, response)
 	if err != nil {
 		logger.Info("failed to create webauthn credential", logError(err))
-		return nil, WebauthnUser{}, ErrInvalidRequest //nolint:exhaustruct
+		return nil, WebauthnUser{}, ErrInvalidRequest
 	}
 
 	w.cleanCache()
